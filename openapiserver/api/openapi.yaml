@@ -33,7 +33,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/_books_post_request"
+              $ref: "#/components/schemas/Book_Post"
         required: true
       responses:
         "201":
@@ -116,7 +116,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/_books_post_request"
+              $ref: "#/components/schemas/Book_Post"
         required: true
       responses:
         "200":
@@ -181,7 +181,7 @@ components:
         - price
         - title
       type: object
-    _books_post_request:
+    Book_Post:
       example:
         title: Harry Potter and the Chamber of Secrets
         author: J.K. Rowling
