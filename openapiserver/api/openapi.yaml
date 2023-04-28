@@ -1,0 +1,203 @@
+openapi: 3.0.0
+info:
+  description: Book Store API Documentation
+  title: Book Store APIs
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+tags:
+  - description: The book management APIs
+    name: Book APIs
+paths:
+  /books:
+    get:
+      operationId: booksGET
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Book"
+                type: array
+          description: The list of books was returned successfully
+        "500":
+          description: An error occurred while retrieving the books
+      summary: Returns a list of all the books
+      tags:
+        - Book APIs
+      x-eov-operation-handler: controllers/BookAPIsController
+    post:
+      operationId: booksPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/_books_post_request"
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+          description: The book was created successfully
+        "500":
+          description: An error occurred while retrieving the book
+      summary: Create a new book
+      tags:
+        - Book APIs
+      x-eov-operation-handler: controllers/BookAPIsController
+  /books/{id}:
+    delete:
+      operationId: booksIdDELETE
+      parameters:
+        - description: The book ID (A string of 24 hex characters/12 bytes)
+          explode: false
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+          description: The book was deleted successfully
+        "404":
+          description: The book with the given ID was not found
+        "500":
+          description: An error occurred while deleting the book
+      summary: Delete the book by ID
+      tags:
+        - Book APIs
+      x-eov-operation-handler: controllers/BookAPIsController
+    get:
+      operationId: booksIdGET
+      parameters:
+        - description: The book ID (A string of 24 hex characters/12 bytes)
+          explode: false
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+          description: The book was returned successfully
+        "404":
+          description: The book with the given ID was not found
+        "500":
+          description: An error occurred while retrieving the book
+      summary: Returns the book by ID
+      tags:
+        - Book APIs
+      x-eov-operation-handler: controllers/BookAPIsController
+    put:
+      operationId: booksIdPUT
+      parameters:
+        - description: The book ID (A string of 24 hex characters/12 bytes)
+          explode: false
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/_books_post_request"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+          description: The book was updated successfully
+        "404":
+          description: The book with the given ID was not found
+        "500":
+          description: An error occurred while retrieving the book
+      summary: Update a book by its ID
+      tags:
+        - Book APIs
+      x-eov-operation-handler: controllers/BookAPIsController
+components:
+  parameters:
+    bookId:
+      description: The book ID (A string of 24 hex characters/12 bytes)
+      explode: false
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
+      style: simple
+  schemas:
+    Book:
+      example:
+        id: 6449b28d0efd053def76bf0f
+        title: Harry Potter and the Chamber of Secrets
+        author: J.K. Rowling
+        price: 200
+        createdAt: 2023-04-26T23:23:57.192Z
+        updatedAt: 2023-04-26T23:23:57.192Z
+        __v: 0
+      properties:
+        id:
+          description: The auto-generated id of the book
+          type: string
+        title:
+          description: The title of the book
+          type: string
+        author:
+          description: The author of the book
+          type: string
+        price:
+          description: The price of the book
+          type: number
+        createdAt:
+          description: The auto-generated timestamp when the book was first added
+          type: string
+        updatedAt:
+          description: The auto-generated timestamp when the book was last modified
+          type: string
+        __v:
+          description: Version number
+          type: number
+      required:
+        - author
+        - price
+        - title
+      type: object
+    _books_post_request:
+      example:
+        title: Harry Potter and the Chamber of Secrets
+        author: J.K. Rowling
+        price: 200
+      properties:
+        title:
+          description: The title of the book
+          type: string
+        author:
+          description: The author of the book
+          type: string
+        price:
+          description: The price of the book
+          type: number
+      required:
+        - author
+        - price
+        - title
+      type: object

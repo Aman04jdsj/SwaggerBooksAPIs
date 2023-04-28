@@ -1,0 +1,181 @@
+openapi: "3.0.0"
+info:
+  title: "Book Store APIs"
+  version: "1.0.0"
+  description: "Book Store API Documentation"
+servers:
+  - url: "http://localhost:3000"
+tags:
+  - name: Book APIs
+    description: The book management APIs
+components:
+  parameters:
+    bookId:
+      in: path
+      name: id
+      schema:
+        type: string
+      required: true
+      description: The book ID (A string of 24 hex characters/12 bytes)
+  schemas:
+    Book:
+      type: object
+      required:
+        - title
+        - author
+        - price
+      properties:
+        id:
+          type: string
+          description: The auto-generated id of the book
+        title:
+          type: string
+          description: The title of the book
+        author:
+          type: string
+          description: The author of the book
+        price:
+          type: number
+          description: The price of the book
+        createdAt:
+          type: string
+          description: The auto-generated timestamp when the book was first added
+        updatedAt:
+          type: string
+          description: The auto-generated timestamp when the book was last modified
+        __v:
+          type: number
+          description: Version number
+      example:
+        id: 6449b28d0efd053def76bf0f
+        title: Harry Potter and the Chamber of Secrets
+        author: J.K. Rowling
+        price: 200
+        createdAt: 2023-04-26T23:23:57.192Z
+        updatedAt: 2023-04-26T23:23:57.192Z
+        __v: 0
+paths:
+  /books:
+    post:
+      summary: Create a new book
+      tags: [Book APIs]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+                - author
+                - price
+              properties:
+                title:
+                  type: string
+                  description: The title of the book
+                author:
+                  type: string
+                  description: The author of the book
+                price:
+                  type: number
+                  description: The price of the book
+              example:
+                title: Harry Potter and the Chamber of Secrets
+                author: J.K. Rowling
+                price: 200
+      responses:
+        201:
+          description: The book was created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+        500:
+          description: An error occurred while retrieving the book
+    get:
+      summary: Returns a list of all the books
+      tags: [Book APIs]
+      responses:
+        200:
+          description: The list of books was returned successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Book"
+        500:
+          description: An error occurred while retrieving the books
+  /books/{id}:
+    get:
+      summary: Returns the book by ID
+      tags: [Book APIs]
+      parameters:
+        - $ref: "#/components/parameters/bookId"
+      responses:
+        200:
+          description: The book was returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+        404:
+          description: The book with the given ID was not found
+        500:
+          description: An error occurred while retrieving the book
+    put:
+      summary: Update a book by its ID
+      tags: [Book APIs]
+      parameters:
+        - $ref: "#/components/parameters/bookId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+                - author
+                - price
+              properties:
+                title:
+                  type: string
+                  description: The title of the book
+                author:
+                  type: string
+                  description: The author of the book
+                price:
+                  type: number
+                  description: The price of the book
+              example:
+                title: Harry Potter and the Chamber of Secrets
+                author: J.K. Rowling
+                price: 200
+      responses:
+        200:
+          description: The book was updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+        404:
+          description: The book with the given ID was not found
+        500:
+          description: An error occurred while retrieving the book
+    delete:
+      summary: Delete the book by ID
+      tags: [Book APIs]
+      parameters:
+        - $ref: "#/components/parameters/bookId"
+      responses:
+        200:
+          description: The book was deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+        404:
+          description: The book with the given ID was not found
+        500:
+          description: An error occurred while deleting the book
